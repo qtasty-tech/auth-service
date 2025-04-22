@@ -15,15 +15,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Bean(name = "customSecurityFilterChain")
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors() .and()
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/user/login", "/api/user/register").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+//    @Bean(name = "customSecurityFilterChain")
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable().cors() .and()
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/api/user/login", "/api/user/register").permitAll()
+//                        .anyRequest().authenticated())
+//                .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+@Bean(name = "customSecurityFilterChain")
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf().disable().cors()
+            .and()
+            .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers("/api/user/login", "/api/user/register").permitAll()
+                    .requestMatchers("/api/restaurant/**").hasRole("RESTAURANT_ADMIN")
+                    .requestMatchers("/api/delivery/**").hasRole("DELIVERY_PERSONNEL")
+                    .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+                    .anyRequest().authenticated())
+            .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class);
+    return http.build();
+}
 
 
     @Bean

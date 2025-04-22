@@ -40,7 +40,10 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 String username = claims.getSubject();
                 String userTypeString = claims.get("user_type", String.class);
-                UserRole userType = UserRole.valueOf(userTypeString.replace("ROLE_", "")); // map to UserRole enum
+                UserRole userType = UserRole.valueOf(
+                        userTypeString.replace("ROLE_", "").toUpperCase() // Handle case sensitivity
+                );
+
 
                 logger.info("Username: {}, User Type: {}", username, userType);
 
