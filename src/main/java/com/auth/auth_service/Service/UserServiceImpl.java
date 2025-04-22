@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService{
 
         User user = new User();
         user.setEmail(userDTO.getEmail());
+        user.setFname(userDTO.getFname());
+        user.setLname(userDTO.getLname());
         user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
         user.setUserType(UserRole.valueOf(userDTO.getUserType() != null ? userDTO.getUserType().toUpperCase() : "NORMAL"));
 
