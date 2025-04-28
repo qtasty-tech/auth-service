@@ -34,10 +34,12 @@ public class UserServiceImpl implements UserService{
 
         User user = new User();
         user.setEmail(userDTO.getEmail());
-        user.setFname(userDTO.getFname());
-        user.setLname(userDTO.getLname());
+        user.setName(userDTO.getName());
+        user.setPhone(userDTO.getPhone());
         user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-        user.setUserType(UserRole.valueOf(userDTO.getUserType() != null ? userDTO.getUserType().toUpperCase() : "NORMAL"));
+        user.setRole(
+                userDTO.getRole() != null ? UserRole.valueOf(userDTO.getRole()) : UserRole.customer
+        );
 
         User savedUser = userRepository.save(user);
         logger.info("User successfully created with ID: {}", savedUser.getId());
@@ -73,7 +75,9 @@ public class UserServiceImpl implements UserService{
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
-        existingUser.setUserType(UserRole.valueOf(userDTO.getUserType() != null ? userDTO.getUserType().toUpperCase() : "NORMAL"));
+        existingUser.setRole(
+                userDTO.getRole() != null ? UserRole.valueOf(userDTO.getRole()) : UserRole.customer
+        );
 
         User updatedUser = userRepository.save(existingUser);
         logger.info("User successfully updated {}", updatedUser.getId());

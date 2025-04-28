@@ -15,8 +15,11 @@ public class JwtProvider {
     public static String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("user_type", user.getUserType().getRole())
                 .claim("id", user.getId())
+                .claim("name", user.getName())
+                .claim("phone", user.getPhone())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 86400000))
                 .signWith(key, SignatureAlgorithm.HS256)
