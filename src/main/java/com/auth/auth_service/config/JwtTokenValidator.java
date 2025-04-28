@@ -39,17 +39,18 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                         .getBody();
 
                 String username = claims.getSubject();
-                String userTypeString = claims.get("user_type", String.class);
-                UserRole userType = UserRole.valueOf(
-                        userTypeString.replace("ROLE_", "").toUpperCase() // Handle case sensitivity
+                String roleString  = claims.get("role", String.class);
+                UserRole role = UserRole.valueOf(
+                        roleString.replace("ROLE_", "").toLowerCase() // lowercase then enum will automatically match
+                                .toUpperCase()
                 );
 
 
-                logger.info("Username: {}, User Type: {}", username, userType);
+                logger.info("Username: {}, User Type: {}", username, role);
 
                 // Assign roles based on user type
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        username, null, Collections.singletonList(() -> userType.getRole()));
+                        username, null, Collections.singletonList(() -> role.getRole()));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {

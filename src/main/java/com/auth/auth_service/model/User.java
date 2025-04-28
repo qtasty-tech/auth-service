@@ -6,40 +6,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "user")
+@Document(collection = "users")
 public class User {
 
     @Id
     private String id;
-    private String fname;
-    private String lname;
+    private String name;
+    private String phone;
     private String email;
     private String password;
-    private UserRole userType;
-
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
-    public UserRole getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserRole userType) {
-        this.userType = userType;
-    }
+    private UserRole role = UserRole.customer;
+    private boolean isVerified= false;
 
     public String getId() {
         return id;
@@ -47,6 +24,22 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -63,5 +56,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }
